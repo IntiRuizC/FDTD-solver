@@ -1,0 +1,22 @@
+# Build products
+/build/
+/build-*/
+/cmake-build-*/
+/CMakeFiles/
+/CMakeCache.txt
+/cmake_install.cmake
+/compile_commands.json
+/Makefile
+*.o
+*.a
+*.so
+*.dylib
+*.dll
+*.exe
+
+# IDE and editor metadata
+/.idea/
+/.vscode/
+/.vs/
+/.clangd/
+
