@@ -15,6 +15,11 @@ public:
     void calculate_H_field(std::size_t i, std::size_t j, std::size_t k);
     void calculate_E_field(std::size_t i, std::size_t j, std::size_t k);
 
+    // Advances H by half a step and E by a full step, then applies Taflove's
+    // absorbing boundary on the outer faces. The boundary assumes
+    // dt = dx / (2c). Sources must stay off the two outermost planes.
+    void time_step();
+
     Grid grid;
     double dt;
 
@@ -30,6 +35,24 @@ public:
     std::vector<double> mu;
     std::vector<double> epsilon;
     std::vector<double> sigma;
+
+private:
+    void update_H_x(std::size_t i, std::size_t j, std::size_t k);
+    void update_H_y(std::size_t i, std::size_t j, std::size_t k);
+    void update_H_z(std::size_t i, std::size_t j, std::size_t k);
+    void update_E_x(std::size_t i, std::size_t j, std::size_t k);
+    void update_E_y(std::size_t i, std::size_t j, std::size_t k);
+    void update_E_z(std::size_t i, std::size_t j, std::size_t k);
+
+    void apply_taflove_boundary();
+
+    // E one and two steps back; the boundary reads the latter.
+    std::vector<double> E_x_prev;
+    std::vector<double> E_y_prev;
+    std::vector<double> E_z_prev;
+    std::vector<double> E_x_prev2;
+    std::vector<double> E_y_prev2;
+    std::vector<double> E_z_prev2;
 };
 
 
