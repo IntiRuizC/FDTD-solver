@@ -24,7 +24,7 @@ TEST_BINARY := $(BUILD_DIR)/grid_tests
 
 .PHONY: all test clean
 
-all: $(BUILD_DIR)/grid.o $(BUILD_DIR)/FdtdSolver.o
+all: $(BUILD_DIR)/grid.o $(BUILD_DIR)/FdtdSolver.o $(BUILD_DIR)/output.o
 
 $(BUILD_DIR)/grid.o: grid.cpp grid.h
 	@mkdir -p $(BUILD_DIR)
@@ -33,6 +33,10 @@ $(BUILD_DIR)/grid.o: grid.cpp grid.h
 $(BUILD_DIR)/FdtdSolver.o: FdtdSolver.cpp FdtdSolver.h grid.h
 	@mkdir -p $(BUILD_DIR)
 	$(CXX) $(CXXFLAGS) -c FdtdSolver.cpp -o $@
+
+$(BUILD_DIR)/output.o: output.cpp output.h FdtdSolver.h grid.h
+	@mkdir -p $(BUILD_DIR)
+	$(CXX) $(CXXFLAGS) -c output.cpp -o $@
 
 $(TEST_BINARY): grid.cpp grid.h tests/grid_tests.cpp
 	@mkdir -p $(BUILD_DIR)
