@@ -20,11 +20,12 @@ GTEST_CFLAGS := $(shell pkg-config --cflags gtest)
 GTEST_LIBS := $(shell pkg-config --libs gtest)
 
 BUILD_DIR := build/$(BUILD)
+BINARY := $(BUILD_DIR)/fdtd
 TEST_BINARY := $(BUILD_DIR)/grid_tests
 
-.PHONY: all test clean
+.PHONY: all run test clean
 
-all: $(BUILD_DIR)/grid.o $(BUILD_DIR)/FdtdSolver.o $(BUILD_DIR)/output.o
+all: $(BINARY)
 
 $(BUILD_DIR)/grid.o: grid.cpp grid.h
 	@mkdir -p $(BUILD_DIR)
@@ -37,6 +38,12 @@ $(BUILD_DIR)/FdtdSolver.o: FdtdSolver.cpp FdtdSolver.h grid.h
 $(BUILD_DIR)/output.o: output.cpp output.h FdtdSolver.h grid.h
 	@mkdir -p $(BUILD_DIR)
 	$(CXX) $(CXXFLAGS) -c output.cpp -o $@
+
+$(BINARY): main.cpp $(BUILD_DIR)/grid.o $(BUILD_DIR)/FdtdSolver.o $(BUILD_DIR)/output.o
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS)
+
+run: $(BINARY)
+	./$(BINARY) out
 
 $(TEST_BINARY): grid.cpp grid.h tests/grid_tests.cpp
 	@mkdir -p $(BUILD_DIR)

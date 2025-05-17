@@ -19,3 +19,5 @@
 /.vs/
 /.clangd/
 
+# Simulation output
+/out/
